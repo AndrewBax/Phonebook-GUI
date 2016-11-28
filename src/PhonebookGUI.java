@@ -83,12 +83,15 @@ public class PhonebookGUI {
 		// Searched for name has to be an exact match!
 		JButton btnNewButton = new JButton("Search");
 		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent a) {	
-				try(PreparedStatement pst = conn.prepareStatement("SELECT * FROM data WHERE First LIKE '"+textField.getText()+"'")){
-					ResultSet rs = pst.executeQuery();
-					table.setModel(DbUtils.resultSetToTableModel(rs));
-				} catch (Exception e) {
-					e.printStackTrace();
+			public void actionPerformed(ActionEvent a) {
+				if (textField.getText().isEmpty()){	refreshTable();}
+				else{
+					try(PreparedStatement pst = conn.prepareStatement("SELECT * FROM data WHERE First LIKE '"+textField.getText()+"'")){
+						ResultSet rs = pst.executeQuery();
+						table.setModel(DbUtils.resultSetToTableModel(rs));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		});
