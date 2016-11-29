@@ -137,6 +137,7 @@ public class PhonebookGUI {
 		
 // ADD BUTTON
 		// KNOWN PROBLEM: currently phone numbers starting with a 1 (1XXXXXXXXX) do not work due to type issues
+		
 		JButton btnNewButton_2 = new JButton("Add");
 		panel_3.add(btnNewButton_2);
 		btnNewButton_2.addActionListener(new ActionListener(){
@@ -169,9 +170,16 @@ public class PhonebookGUI {
 				button.addActionListener(new ActionListener(){
 					String sql = "INSERT INTO data(First,Last,Number) VALUES(?,?,?)";	//adding input info from add box to database
 					public void actionPerformed(ActionEvent a){
-						String fname = textbox.getText();
-						String lname = textbox1.getText();
-						Float number = Float.parseFloat(textbox2.getText());
+						String fname, lname;
+						Float number;
+						if (textbox.getText().equals("")){fname = "NoFirst";}
+						else{fname = textbox.getText();}
+						
+						if(textbox1.getText().equals("")){lname = "NoLast";}
+						else{lname = textbox1.getText();}
+						
+						if(textbox2.getText().equals("")){number = Float.parseFloat("0000000000");}
+						else{number = Float.parseFloat(textbox2.getText());}
 						try(PreparedStatement pst = conn.prepareStatement(sql)){
 							pst.setString(1,fname);
 							pst.setString(2, lname);
@@ -187,7 +195,6 @@ public class PhonebookGUI {
 				});
 			}
 		});
-		
 // REMOVE BUTTON
 		
 		// this will remove any selected row and all other rows that have the same first and last name
